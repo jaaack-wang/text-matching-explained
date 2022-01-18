@@ -27,17 +27,18 @@ class BoW(nn.Layer):
         self.dense_out = nn.Linear(hidden_dim, output_dim)
 
     def encoder(self, embd):
-        # summing up the embedding of ids to get text_embds
-        # shape: ids_embd, (batch_size, max_text_len, embedding_dim)
-        # text_embd, (batch_size, embedding_dim)
+        # summing up the embedding text_embds
+        # shape: embd (input), (batch_size, text_seq_len, embedding_dim)
+        # embd (output), (batch_size, embedding_dim)
         return embd.sum(axis=1)
 
     def forward(self, text_a_ids, text_b_ids):
-        # shape: text_ids, (batch_size, max_text_len) 
-        # --> text_ids_embd, (batch_size, max_text_len, embedding_dim) 
+        # shape: text_ids, (batch_size, text_seq_len) 
+        # --> text_ids_embd, (batch_size, text_seq_len, embedding_dim) 
         text_a_ids_embd = self.embedding(text_a_ids)
         text_b_ids_embd = self.embedding(text_b_ids)
 
+        # shape: text_embds, (batch_size, embedding_dim)
         text_a_embd = self.encoder(text_a_ids_embd)
         text_b_embd = self.encoder(text_b_ids_embd)
 

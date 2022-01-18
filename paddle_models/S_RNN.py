@@ -39,10 +39,16 @@ class SimpleRNN(nn.Layer):
 
 
     def encoder(self, embd, seq_len):
+        # shape: encoded, (batch_size, seq_len, rnn_hidden_dim)
+        # shape: hidden, (1, batch size, rnn_hidden_dim)
         encoded, hidden = self.rnn(embd, sequence_length=seq_len)
+        
+        # shape: hidden, (batch size, rnn_out_dim);
+        # if bidirectional, rnn_out_dim = rnn_hidden_dim * 2; otherwise same
         if self.direction != 'bidirect':
+#             return  hidden[-1]    # This works too
             return hidden[-1, :, :]
-
+#         return paddle.concat([hidden[-2], hidden[-1]], axis=-1)    # This works too
         return paddle.concat((hidden[-2, :, :], hidden[-1, :, :]), axis=1)
 
     def forward(self, text_a_ids, text_b_ids, text_a_seq_len, text_b_seq_len):
@@ -51,14 +57,16 @@ class SimpleRNN(nn.Layer):
         text_a_ids_embd = self.embedding(text_a_ids)
         text_b_ids_embd = self.embedding(text_b_ids)
 
-        # shape: (batch_size, gru_out_dim)
+        # shape: (batch_size, rnn_out_dim)
         encoded_a = self.encoder(text_a_ids_embd, text_a_seq_len)
         encoded_b = self.encoder(text_b_ids_embd, text_b_seq_len)
 
-        # shape: (batch_size, gru_out_dim * 2)
+        # concatenate [text_a_embd, text_b_embd]
+        # shape: (batch_size, rnn_out_dim * 2)
         concat = paddle.concat([encoded_a, encoded_b], axis=-1)
 
-        # shape: hidden_out, (batch_size, hidden_dim_out)
+        # go through a dense layer before output
+        # shape: hidden_out, (batch_size, hidden_dim)
         hidden_out = self.activation(self.dense(concat))
 
         # shape: out_logits, (batch_size, output_dim)

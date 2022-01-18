@@ -38,12 +38,12 @@ class CNN(nn.Layer):
         self.dense_out = nn.Linear(hidden_dim, output_dim)
     
     def encoder(self, embd):
-        # shape: transpose, (batch_size, embedding_dim, max_text_len) 
+        # shape: embd, (batch_size, embedding_dim, max_text_len) 
         embd = embd.transpose((0,2,1))
-        # shape: (batch_size, filter_size, embedding_dim, kernel_size)
+        # shape: conved (each), (batch_size, filter_size, embedding_dim, kernel_size)
         conved = [self.activation(conv(embd)) for conv in self.convs]
-        # shape: 
         max_pooled = [F.adaptive_max_pool1d(conv, output_size=1).squeeze(2) for conv in conved]
+        # shape: pooled_concat, (batch_size, num_filter * num_filter_sizes)
         pooled_concat = paddle.concat(max_pooled, axis=1)
         return pooled_concat
  
@@ -53,10 +53,11 @@ class CNN(nn.Layer):
         text_a_ids_embd = self.embedding(text_a_ids)
         text_b_ids_embd = self.embedding(text_b_ids)
 
-        # shape: (batch_size, num_filter * num_filter_sizes)
+        # shape: encoded, (batch_size, num_filter * num_filter_sizes)
         encoded_a = self.encoder(text_a_ids_embd)
         encoded_b = self.encoder(text_b_ids_embd)
 
+        # concatenate [text_a_embd, text_b_embd]
         # shape: (batch_size, num_filter * num_filter_sizes * 2)
         concat = paddle.concat([encoded_a, encoded_b], axis=-1)
 
