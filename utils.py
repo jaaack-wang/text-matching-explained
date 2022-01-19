@@ -33,8 +33,8 @@ def load_dataset(fpath, num_row_to_skip=0):
         return [list(read(fp)) for fp in fpath]
     
     raise TypeError("Input fpath must be a (list) of valid filepath(es)")
-    
-            
+
+
 def gather_text(dataset, end_col=2):
     out = []
     for data in dataset:
@@ -196,7 +196,7 @@ class TextVectorizer:
         except:
             raise ValueError("No vocab is built or loaded.")
 
-            
+
 def encode_dataset(dataset, encoder):
     
     for text_a, text_b, label in dataset:
@@ -204,8 +204,8 @@ def encode_dataset(dataset, encoder):
         text_b = encoder(text_b)
         
         yield [text_a, text_b, label]
-        
-        
+
+
 def batch_creater(lst, 
                   batch_size, 
                   reminder_threshold=0):
@@ -270,10 +270,14 @@ def build_batches(dataset,
         text_a, text_b, label = [], [], []
         
         if include_seq_len:
-            text_a_len = [len(bt[0]) for bt in batch]
-            text_a_len = np.asarray(text_a_len, dtype=dtype)
+            if max_seq_len:
+                text_a_len = [max_seq_len] * len(batch)
+                text_b_len = [max_seq_len] * len(batch)
+            else:
+                text_a_len = [len(bt[0]) for bt in batch]
+                text_b_len = [len(bt[1]) for bt in batch]
             
-            text_b_len = [len(bt[1]) for bt in batch]
+            text_a_len = np.asarray(text_a_len, dtype=dtype)
             text_b_len = np.asarray(text_b_len, dtype=dtype)
             
         
