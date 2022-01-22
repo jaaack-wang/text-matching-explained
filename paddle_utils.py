@@ -1,3 +1,10 @@
+'''
+Author: Zhengxiang (Jack) Wang 
+GitHub: https://github.com/jaaack-wang 
+About: Wrapped functions related to paddle for my repository: 
+text-matching-explained (context-specific only)
+'''
+
 from paddlenlp.datasets import MapDataset
 from paddle.io import BatchSampler, DataLoader
 from paddlenlp.data import Pad, Stack, Tuple

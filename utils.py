@@ -272,8 +272,10 @@ def build_batches(dataset,
         
         if include_seq_len:
             if max_seq_len:
-                text_a_len = [max_seq_len] * len(batch)
-                text_b_len = [max_seq_len] * len(batch)
+                text_a_len = [len(bt[0]) if len(bt[0]) < max_seq_len 
+                              else max_seq_len for bt in batch]
+                text_b_len = [len(bt[1]) if len(bt[1]) < max_seq_len 
+                              else max_seq_len for bt in batch]
             else:
                 text_a_len = [len(bt[0]) for bt in batch]
                 text_b_len = [len(bt[1]) for bt in batch]
