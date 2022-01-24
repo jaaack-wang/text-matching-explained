@@ -6,7 +6,7 @@ We will build five deep learning models (BoW, CNN, RNN, LSTM, and GRU, or three 
 
 **One interesting fact** about this repository is that, I tried to twist `PyTorch` and `TensorFlow` to fit the way I built the models initially using `paddle`. I find it beneficial for myself to tell the nuances as well as commonalities among different deep learning frameworks, although doing so may not feel easy at first and certainly does not represent the best ways of employing those deep learning frameworks that I twisted. 
 
-This repository is closely related to another repository called [text-classification-explained](https://github.com/jaaack-wang/text-classification-explained). These two repositories are siblings because the baisc architectures for the five models are same except that models constucted here are able to take as inputs two pieces of texts instead of one single text. Therefore, you will simple large amounts of overlaps between these two repositories if you are interested in both. 
+This repository is closely related to another repository called [text-classification-explained](https://github.com/jaaack-wang/text-classification-explained). These two repositories are siblings because the baisc architectures for the five models are same except that models constucted here are able to take as inputs two pieces of texts instead of one single text. Therefore, you will see large amounts of overlaps between these two repositories if you are interested in both. 
 
 The models built here are adapted from the ones I used for my research, titled [Linguistic Knowledge in Data Augmentation for Natural Language Processing: An Example on Chinese Question Matching](https://arxiv.org/abs/2111.14709). Source Code, data, and experimental results can be seen at [this repository](https://github.com/jaaack-wang/linguistic-knowledge-in-DA-for-NLP).
 
@@ -21,13 +21,13 @@ The general architecture for the five models can be illustrated as follows: firs
 - the arrow means a process, or more specifically a function (let's be philosophical, no function at all is also a function, i.e., f(x)=x) that values from previous layer needs to go through; 
 - the number of layers can be arbitrarily large, but our models are basically all four layers (including the input layer, but excluding the inserted CNN, RNNs, which are taken as a function here for illustration).
 - There should be many ways to convert two embeddings into one aggregated embedding, but here we simply concatenate them together, meaning [1, 2, 3] + [4, 5, 6] = [1, 2, 3, 4, 5, 6]; [[1, 2, 3]] + [[4, 5, 6]] = [[1, 2, 3], [4, 5, 6]] or [[1, 2, 3, 4, 5, 6]] (dependending one axis you concatenate). Our models do the latter. 
-- **The key difference among these models** how the initial two embeddings are processed or **encoded** before they are concatenated together. If you read the source codes for the five models, you can see the **encoders** for the five models what makes a model a model. 
+- **The key difference among these models** how the initial two embeddings are processed or **encoded** before they are concatenated together. If you read the source codes for the five models, you can see the **encoders** for the five models are what makes a model a model. 
 
 <p align='center'>
  <img align="center" width='750' height='550' src="./imgs/one_text_pair_one_label_clf.png">
 </p>
 
-If we simplify the model, only take one text as input, and leave out the aggregated embedding layer, then what is left is essentially a general architecture for (one) text (one label) classifcation model!
+If we simplify the models, only take one text as input, and leave out the aggregated embedding layer, then what is left is essentially a general architecture for (one) text (one label) classifcation model! Please refer to the [text-classification-explained](https://github.com/jaaack-wang/text-classification-explained) repository to find out more.
 
 <p align='center'>
  <img align="center" width='750' height='400' src="./imgs/one_text_one_label_clf.png">
