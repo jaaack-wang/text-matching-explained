@@ -24,11 +24,11 @@ The general architecture for the five models can be illustrated as follows: firs
 - **The key difference among these models** how the initial two embeddings are processed or **encoded** before they are concatenated together. If you read the source codes for the five models, you can see the **encoders** for the five models what makes a model a model. 
 
 <p align='center'>
- <img align="center" width='750' height='250' src="./imgs/one_text_pair_one_label_clf.png">
+ <img align="center" width='750' height='550' src="./imgs/one_text_pair_one_label_clf.png">
 </p>
 
 If we simplify the model, only take one text as input, and leave out the aggregated embedding layer, then what is left is essentially a general architecture for (one) text (one label) classifcation model!
 
 <p align='center'>
- <img align="center" width='750' height='250' src="./imgs/one_text_one_label_clf.png">
+ <img align="center" width='750' height='400' src="./imgs/one_text_one_label_clf.png">
 </p>
